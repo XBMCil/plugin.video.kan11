@@ -3,6 +3,7 @@ import re
 from urllib.parse import urlencode, parse_qsl
 import xbmcgui, xbmc, xbmcplugin
 import requests
+import json
 
 # Get the plugin url in plugin:// notation.
 _URL = sys.argv[0]
@@ -236,7 +237,31 @@ def play_video(path):
     :param path: Fully-qualified video URL
     :type path: str
     """
+    log("original video %s" % path)
+    url_parts = path.split('/')
+    if 'entryId' in url_parts:
+        entry_id = url_parts[url_parts.index('entryId') + 1]
+        url = 'https://cdnapisec.kaltura.com/p/2717431/sp/271743100/embedIframeJs/uiconf_id/45733501/partner_id/2717431?iframeembed=true&playerId=playerid_45733501&entry_id=%s' % entry_id
+        response_raw = requests.get(url)
+        needle = "window.kalturaIframePackageData = "
+        try:
+            lines = list(filter(lambda line: needle in line, response_raw.text.split('\n')))
+            if len(lines):
+                first_line = lines[0]
+                json_raw = json.loads(first_line[first_line.index(needle) + len(needle):-1])
+                flavors = json_raw['entryResult']['contextData']['flavorAssets']
+                flavors = sorted(flavors, key=lambda item: item['height'])
+                asset = flavors[-1]
+                if asset['height'] > 720:
+                    urls_raw = requests.get(path).text
+                    last_url = list(filter(lambda line: 'http' in line, urls_raw.split('\n')))[-1]
+                    last_url_parts = last_url.split('/')
+                    if 'flavorId' in last_url_parts:
+                        path = last_url.replace(last_url_parts[last_url_parts.index('flavorId') + 1], asset['id'])
+        except:
+            log('video error, fallback to 720')
     # Create a playable item with a path to play.
+    log("final video %s" % path)
     play_item = xbmcgui.ListItem(path=path)
     # Pass the item to the Kodi player.
     xbmcplugin.setResolvedUrl(_HANDLE, True, listitem=play_item)
