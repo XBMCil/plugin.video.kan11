@@ -242,7 +242,7 @@ def play_video(path):
     if 'entryId' in url_parts:
         entry_id = url_parts[url_parts.index('entryId') + 1]
         url = 'https://cdnapisec.kaltura.com/p/2717431/sp/271743100/embedIframeJs/uiconf_id/45733501/partner_id/2717431?iframeembed=true&playerId=playerid_45733501&entry_id=%s' % entry_id
-        response_raw = requests.get(url)
+        response_raw = session.get(url)
         needle = "window.kalturaIframePackageData = "
         try:
             lines = list(filter(lambda line: needle in line, response_raw.text.split('\n')))
@@ -253,7 +253,7 @@ def play_video(path):
                 flavors = sorted(flavors, key=lambda item: item['height'])
                 asset = flavors[-1]
                 if asset['height'] > 720:
-                    urls_raw = requests.get(path).text
+                    urls_raw = session.get(path).text
                     last_url = list(filter(lambda line: 'http' in line, urls_raw.split('\n')))[-1]
                     last_url_parts = last_url.split('/')
                     if 'flavorId' in last_url_parts:
