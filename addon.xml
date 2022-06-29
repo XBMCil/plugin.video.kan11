@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.kan11"
+       version="1.0.0"
+       name="Kan11 VOD"
+       provider-name="CaTz">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.9.1"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Kan11 VOD Kodi Video Plugin</summary>
+        <description lang="en_GB">Videos are provided by www.kan11.co.il.</description>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+        <news>Updated with latest artwork metadata</news>
+    </extension>
+</addon>
