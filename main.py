@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import re
-from urllib.parse import urlencode, parse_qsl
+from urlparse import parse_qsl
+from urllib import urlencode
 import xbmcgui, xbmc, xbmcplugin
 import requests
 import json
@@ -173,7 +176,7 @@ def list_categories():
                                     'mediatype': 'video'})
         # Create a URL for a plugin recursive call.
         # Example: plugin://plugin.video.example/?action=listing&category=Animals
-        url = get_url(action='listing', id=category["id"], title=category["title"])
+        url = get_url(action='listing', id=category["id"], title=category["title"].encode('utf-8'))
         # is_folder = True means that this item opens a sub-list of lower level items.
         is_folder = True
         # Add our item to the Kodi virtual folder listing.
@@ -277,6 +280,7 @@ def router(paramstring):
     # Parse a URL-encoded paramstring to the dictionary of
     # {<parameter>: <value>} elements
     params = dict(parse_qsl(paramstring))
+
     # Check the parameters passed to the plugin
     if params:
         log("params: %s" % params)

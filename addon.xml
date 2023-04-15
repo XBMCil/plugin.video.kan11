@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.kan11" version="1.0.0" name="Kan11 VOD" provider-name="CaTz">
     <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="xbmc.python" version="2.26.0"/>
         <import addon="script.module.requests" version="2.9.1"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="main.py">
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary lang="en">Kan11 VOD Kodi Video Plugin</summary>
+        <summary lang="en_GB">Kan11 VOD Kodi Video Plugin</summary>
         <description lang="en_GB">VOD programs taken from www.kan11.co.il</description>
-        <assets>
-            <icon>icon.png</icon>
-        </assets>
-        <news>v1.0.0 - by CaTz [29.06.2022]
-- Kan 11 VOD lister
-- Supports 1080p quality</news>
     </extension>
 </addon>
